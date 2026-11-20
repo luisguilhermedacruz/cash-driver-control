@@ -1,0 +1,15 @@
+# Ambiente virtual
+.venv/
+
+# Senhas e chaves
+.env
+
+# Dados pessoais e financeiros
+data/
+
+# Arquivos temporários do Python
+__pycache__/
+*.pyc
+
+# Arquivo temporário do Excel
+~$*.xlsx
