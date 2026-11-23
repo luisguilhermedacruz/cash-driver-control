@@ -113,3 +113,27 @@ legend { padding: 0; margin-bottom: 8px; }
 .center-text { text-align: center; }
 .error { color: var(--danger); font-size: 14px; }
 .info { color: var(--accent); font-size: 14px; }
+
+/* Botão do Google: fundo branco, como pedem as regras de marca do Google. */
+.btn-google { background: #FFFFFF; color: #1F1F1F; }
+.g-mark { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #1F1F1F; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Páginas de Privacidade e Termos */
+.legal { max-width: 720px; margin: 0 auto; padding: 24px 20px 40px; line-height: 1.65; }
+.legal h2 { font-size: 18px; font-weight: 600; margin: 12px 0 0; }
+.legal ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.legal a { color: var(--accent); }
+.legal-brand { color: var(--text); text-decoration: none; }
+.login a { color: var(--accent); }
+
+/* Tablet (e computador): a coluna fica mais larga e os textos um pouco maiores. */
+@media (min-width: 700px) {
+  .app, .page.login { max-width: 640px; }
+  :root { font-size: 17px; }
+  .header { padding: 24px 24px 8px; }
+  .page { padding: 8px 24px 32px; gap: 20px; }
+  .timer-value { font-size: 64px; }
+  .btn { height: 60px; }
+}

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { Logo, ErrorMsg } from '../ui'
 
-// Tela 1 · Login. Hoje: e-mail e senha. O login com Google entra numa próxima versão.
+// Tela 1 · Login: Google (OAuth) ou e-mail e senha.
 export default function Login() {
   const [mode, setMode] = useState('entrar') // 'entrar' ou 'criar'
   const [email, setEmail] = useState('')
@@ -10,6 +10,17 @@ export default function Login() {
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
   const [busy, setBusy] = useState(false)
+
+  // Login com Google: o Supabase manda a pessoa pro Google e, depois do login,
+  // ela volta pro nosso site (redirectTo). O nome e a foto vêm do Google.
+  async function google() {
+    setError('')
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.origin },
+    })
+    if (error) setError(error.message)
+  }
 
   async function submit(e) {
     e.preventDefault()
@@ -37,6 +48,12 @@ export default function Login() {
         <h1>Seja bem-vindo</h1>
         <p className="muted">Seus ganhos por hora em Uber, 99 e InDriver, num lugar só.</p>
       </div>
+      <div className="stack-12">
+        <button type="button" className="btn btn-google" onClick={google}>
+          <span className="g-mark" aria-hidden="true">G</span> Entrar com Google
+        </button>
+        <div className="divider"><span>ou com e-mail</span></div>
+      </div>
       <form className="stack-12" onSubmit={submit}>
         <label className="field">
           <span>E-mail</span>
@@ -52,12 +69,11 @@ export default function Login() {
         <button className="btn btn-primary" disabled={busy}>
           {busy ? 'Aguarde…' : mode === 'entrar' ? 'Entrar com e-mail' : 'Criar conta'}
         </button>
-        <button type="button" className="btn btn-secondary" disabled title="Em breve">Entrar com Google (em breve)</button>
         <button type="button" className="link-btn" onClick={() => { setMode(mode === 'entrar' ? 'criar' : 'entrar'); setError(''); setInfo('') }}>
           {mode === 'entrar' ? 'Não tem conta? Criar conta' : 'Já tem conta? Entrar'}
         </button>
       </form>
-      <p className="muted small center-text">Ao entrar, você concorda com os Termos de Uso e a Política de Privacidade.</p>
+      <p className="muted small center-text">Ao entrar, você concorda com os <a href="/termos">Termos de Uso</a> e a <a href="/privacidade">Política de Privacidade</a>.</p>
     </main>
   )
 }

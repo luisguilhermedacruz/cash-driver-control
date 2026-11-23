@@ -9,6 +9,7 @@ import Relatorios from './screens/Relatorios'
 import Perfil from './screens/Perfil'
 import Configuracoes from './screens/Configuracoes'
 import Menu from './screens/Menu'
+import { Privacidade, Termos } from './screens/Legal'
 
 // O App decide qual tela mostrar:
 // sem login → Login · sem meta → Onboarding · com tudo → telas do dia a dia.
@@ -33,6 +34,11 @@ export default function App() {
   }, [session])
 
   useEffect(() => { loadProfile() }, [loadProfile])
+
+  // Páginas públicas: abrem com ou sem login (o Google exige esses links).
+  const path = window.location.pathname
+  if (path === '/privacidade') return <Privacidade />
+  if (path === '/termos') return <Termos />
 
   if (!configOk) {
     return <div className="center-page"><p>Faltam as variáveis VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY.</p></div>
