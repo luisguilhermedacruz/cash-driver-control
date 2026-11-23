@@ -1,0 +1,6 @@
+# Bibliotecas baixadas (cada computador instala as suas com npm install)
+node_modules/
+# Site montado pelo build (a Vercel gera o dela)
+dist/
+# Chaves locais
+.env.local
