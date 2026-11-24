@@ -85,7 +85,7 @@ export default function Encerrar({ user, name, go, openMenu, shiftId }) {
         {main.map(field)}
         <span className="muted small">Não rodou em alguma? Deixe em branco.</span>
         {others.length > 0 && !showOthers && (
-          <button className="link-btn left" onClick={() => setShowOthers(true)}><Icon name="plus" size={18} /> Particular ou entrega</button>
+          <button className="link-btn left" onClick={() => setShowOthers(true)}><Icon name="plus" size={18} /> Outras plataformas</button>
         )}
         {showOthers && others.map(field)}
         <ErrorMsg error={error} />
