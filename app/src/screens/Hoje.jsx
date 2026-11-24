@@ -56,7 +56,7 @@ export default function Hoje({ user, name, go, openMenu }) {
 
   return (
     <>
-      <Header onMenu={openMenu} initial={name[0]?.toUpperCase()} />
+      <Header onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} />
       <main className="page">
         <div className="stack-2">
           <span className="muted small">{dayLabel(today)}</span>

@@ -35,7 +35,7 @@ export function Logo({ size = 28 }) {
   )
 }
 
-export function Header({ title, onBack, onMenu, initial }) {
+export function Header({ title, onBack, onMenu, initial, avatar }) {
   return (
     <header className="header">
       {onBack
@@ -44,7 +44,9 @@ export function Header({ title, onBack, onMenu, initial }) {
       {title
         ? <span className="header-title">{title}</span>
         : <span className="brand"><Logo size={26} /> Cash Driver</span>}
-      <button className="avatar" onClick={onMenu} aria-label="Abrir menu">{initial}</button>
+      <button className="avatar" onClick={onMenu} aria-label="Abrir menu">
+        {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : initial}
+      </button>
     </header>
   )
 }

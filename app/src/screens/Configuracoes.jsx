@@ -24,7 +24,7 @@ export default function Configuracoes({ user, name, go, openMenu, onSaved }) {
 
   return (
     <>
-      <Header title="Configurações" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} />
+      <Header title="Configurações" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} />
       <form className="page" onSubmit={save}>
         <label className="field"><span>Seu nome</span><input value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="name" /></label>
         <label className="field"><span>Meta de ganhos por hora</span>

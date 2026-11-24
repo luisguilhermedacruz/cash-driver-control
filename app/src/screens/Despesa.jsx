@@ -51,7 +51,7 @@ export default function Despesa({ user, name, go, openMenu }) {
 
   return (
     <>
-      <Header title="Nova despesa" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} />
+      <Header title="Nova despesa" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} />
       <form className="page" onSubmit={save}>
         <fieldset className="stack-8">
           <legend className="strong">Tipo</legend>

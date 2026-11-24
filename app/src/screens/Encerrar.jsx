@@ -29,7 +29,7 @@ export default function Encerrar({ user, name, go, openMenu, shiftId }) {
     })()
   }, [shiftId])
 
-  if (!shift) return (<><Header title="Encerrar turno" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} /><main className="page"><ErrorMsg error={error} /><p className="muted">Carregando…</p></main></>)
+  if (!shift) return (<><Header title="Encerrar turno" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} /><main className="page"><ErrorMsg error={error} /><p className="muted">Carregando…</p></main></>)
 
   const closedBreaks = breaks.map((b) => (b.ended_at ? b : { ...b, ended_at: endAt }))
   const seconds = workedSeconds({ ...shift, ended_at: endAt }, closedBreaks)
@@ -75,7 +75,7 @@ export default function Encerrar({ user, name, go, openMenu, shiftId }) {
 
   return (
     <>
-      <Header title="Encerrar turno" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} />
+      <Header title="Encerrar turno" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} />
       <main className="page">
         <div className="card stack-2">
           <span className="strong big">{timeLabel(shift.started_at)} → {timeLabel(endAt)}</span>

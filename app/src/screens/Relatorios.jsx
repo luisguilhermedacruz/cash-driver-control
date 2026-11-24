@@ -62,7 +62,7 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
 
   return (
     <>
-      <Header title="Relatórios" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} />
+      <Header title="Relatórios" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} />
       <main className="page">
         <div className="segmented" role="tablist">
           {TABS.map(([k, l]) => (

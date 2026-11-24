@@ -30,6 +30,18 @@ export default function App() {
   const loadProfile = useCallback(async () => {
     if (!session) { setProfile(null); return }
     const { data } = await supabase.from('profiles').select('*').eq('id', session.user.id).single()
+    // Quem criou a conta por e-mail e depois entrou com o Google: o perfil não tinha nome/foto.
+    // Aqui copiamos do Google (user_metadata) o que estiver faltando.
+    const meta = session.user.user_metadata || {}
+    const photo = meta.avatar_url || meta.picture
+    const fullName = meta.full_name || meta.name
+    const patch = {}
+    if (data && !data.avatar_url && photo) patch.avatar_url = photo
+    if (data && !data.full_name && fullName) patch.full_name = fullName
+    if (Object.keys(patch).length) {
+      await supabase.from('profiles').update(patch).eq('id', session.user.id)
+      Object.assign(data, patch)
+    }
     setProfile(data || { id: session.user.id })
   }, [session])
 

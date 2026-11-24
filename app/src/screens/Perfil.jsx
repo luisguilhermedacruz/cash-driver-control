@@ -35,10 +35,10 @@ export default function Perfil({ user, name, go, openMenu }) {
 
   return (
     <>
-      <Header title="Perfil" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} />
+      <Header title="Perfil" onBack={() => go('hoje')} onMenu={openMenu} initial={name[0]?.toUpperCase()} avatar={user.avatar_url} />
       <main className="page">
         <div className="profile-head">
-          {user.avatar_url ? <img src={user.avatar_url} alt="" className="avatar-big" /> : <span className="avatar-big">{name[0]?.toUpperCase()}</span>}
+          {user.avatar_url ? <img src={user.avatar_url} alt="" className="avatar-big" referrerPolicy="no-referrer" /> : <span className="avatar-big">{name[0]?.toUpperCase()}</span>}
           <span className="strong big">{user.full_name || name}</span>
           <span className="muted small">Motorista de aplicativo · desde {since}</span>
           {info && (
