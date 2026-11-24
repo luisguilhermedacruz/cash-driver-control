@@ -4,6 +4,9 @@ import { localDate, addDays, money, hoursLabel, timeLabel, dayLabel, pauseLabel 
 import { summarize, shiftTimes } from '../lib/metrics'
 import { Header, Stat, Badge, Icon, ErrorMsg } from '../ui'
 
+// O gerador de PDF é carregado só quando o relatório abre (deixa o resto do app mais leve).
+const pdfModule = () => import('../lib/pdf')
+
 const TABS = [['dia', 'Dia'], ['semana', 'Semana'], ['mes', 'Mês'], ['datas', 'Datas']]
 
 // Intervalo [início, fim] de cada aba, a partir de uma data de referência.
@@ -39,7 +42,10 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
   const [to, setTo] = useState(today)
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
+  const [pdfBusy, setPdfBusy] = useState(false)
   const [start, end] = range(tab, ref, from, to)
+
+  useEffect(() => { pdfModule().then((m) => m.preloadLogo()).catch(() => {}) }, [])
 
   useEffect(() => {
     let alive = true
@@ -104,6 +110,9 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
                   <span className="stack-2"><span className="strong big">{pauseLabel(sum.total.paused)}</span><span className="muted small">em {sum.total.pauses} {sum.total.pauses === 1 ? 'pausa' : 'pausas'}</span></span>
                   <span className="stack-2"><span className="strong big">{hoursLabel(sum.total.span)}</span><span className="muted small">do início ao fim</span></span>
                 </div>
+                {sum.total.costPerHour !== null && sum.total.seconds > 0 && (
+                  <span className="small">Sua hora de trabalho custou <strong>{money(sum.total.costPerHour)}</strong> e deu <strong>{money(sum.total.profitPerHour)}</strong> de lucro.</span>
+                )}
                 {tab !== 'dia' && sum.total.daysWithHours > 0 && (
                   <span className="muted small">Média de {hoursLabel(sum.total.seconds / sum.total.daysWithHours)} trabalhadas por dia ({sum.total.daysWithHours} {sum.total.daysWithHours === 1 ? 'dia' : 'dias'} com horário).</span>
                 )}
@@ -161,7 +170,15 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
               </div>
             )}
             {sum.days.length === 0 && <p className="muted">Nenhum lançamento nesse período.</p>}
-            <button className="btn btn-secondary" disabled title="Em breve">Compartilhar PDF (em breve)</button>
+            <button className="btn btn-secondary" disabled={pdfBusy || sum.days.length === 0} onClick={async () => {
+              setPdfBusy(true); setError('')
+              try {
+                const m = await pdfModule()
+                const file = await m.gerarPDF({ user, name, label, sum, byPlatform, byGroup, tab, data, start, end })
+                await m.compartilhar(file)
+              } catch (e) { setError('Não consegui gerar o PDF: ' + e.message) }
+              setPdfBusy(false)
+            }}><Icon name="share" size={20} /> {pdfBusy ? 'Gerando PDF…' : 'Compartilhar PDF'}</button>
           </>
         )}
       </main>

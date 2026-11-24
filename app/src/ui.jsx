@@ -13,6 +13,7 @@ const paths = {
   out: 'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',
   left: 'M15 5l-7 7 7 7',
   right: 'M9 5l7 7-7 7',
+  share: 'M12 3v12M7 8l5-5 5 5M5 14v5h14v-5',
 }
 
 export function Icon({ name, size = 22 }) {
