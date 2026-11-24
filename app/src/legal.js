@@ -2,6 +2,6 @@
 export const LEGAL = {
   controlador: 'Luis Guilherme da Cruz Matos',
   contato: 'luisguilhermedev@gmail.com',
-  site: 'https://cash-driver-control.vercel.app',
+  site: 'https://quantofez.com.br',
   vigencia: '23 de novembro de 2026',
 }

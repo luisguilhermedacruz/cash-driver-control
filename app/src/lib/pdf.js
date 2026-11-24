@@ -122,7 +122,7 @@ export async function gerarPDF({ user, name, label, sum, byPlatform, byGroup, ta
   const n = doc.getNumberOfPages()
   for (let i = 1; i <= n; i++) {
     doc.setPage(i); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...CINZA)
-    doc.text('QuantoFez · relatório gerado a partir dos lançamentos do motorista · valores em R$', M, 287)
+    doc.text('quantofez.com.br · relatório gerado a partir dos lançamentos do motorista · valores em R$', M, 287)
     doc.text(`página ${i} de ${n}`, M + W, 287, { align: 'right' })
   }
 
