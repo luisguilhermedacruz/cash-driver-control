@@ -48,6 +48,7 @@ export function summarize({ shifts = [], breaks = [], earnings = [], expenses = 
   const list = Object.values(days).sort((a, b) => b.date.localeCompare(a.date))
   list.forEach((d) => {
     d.perHour = d.seconds > 0 ? d.revenue / (d.seconds / 3600) : null
+    d.costPerHour = d.seconds > 0 ? d.expenses / (d.seconds / 3600) : null
     d.rating = rating(d.perHour, goal)
   })
   const total = list.reduce(
@@ -57,6 +58,9 @@ export function summarize({ shifts = [], breaks = [], earnings = [], expenses = 
   )
   total.profit = total.revenue - total.expenses
   total.perHour = total.seconds > 0 ? total.revenue / (total.seconds / 3600) : null
+  // Custo da hora = despesas ÷ horas trabalhadas · Lucro por hora = lucro ÷ horas trabalhadas
+  total.costPerHour = total.seconds > 0 ? total.expenses / (total.seconds / 3600) : null
+  total.profitPerHour = total.seconds > 0 ? total.profit / (total.seconds / 3600) : null
   total.rating = rating(total.perHour, goal)
   total.days = list.filter((d) => d.revenue > 0 || d.seconds > 0).length
   total.daysWithHours = list.filter((d) => d.seconds > 0).length
