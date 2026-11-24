@@ -1,0 +1,10 @@
+// Configuração do Cloudflare Workers: publica só os arquivos estáticos que o Vite gera em dist/.
+{
+  "name": "quantofez",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    // App de página única: qualquer endereço (/privacidade, /termos) abre o index.html e o React decide a tela.
+    "not_found_handling": "single-page-application"
+  }
+}
