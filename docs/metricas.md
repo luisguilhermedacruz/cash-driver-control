@@ -8,11 +8,15 @@ devem calcular exatamente assim.
 | Métrica | Fórmula | Observação |
 |---|---|---|
 | Receita bruta | Soma de todas as plataformas + particular + entrega | Valor recebido antes de qualquer gasto |
-| Horas trabalhadas | Soma dos períodos rodando (sem contar as pausas) | Ex.: (Pausa − Saída) + (Fim − Volta) |
+| Jornada | Fim do turno − início do turno | Ex.: 05:00 → 13:30 = 8h30 |
+| Tempo em pausa | Soma de todas as pausas do turno | Um turno pode ter quantas pausas forem necessárias |
+| Horas trabalhadas | Jornada − tempo em pausa | Ex.: 8h30 − 40 min = 7h50. É a que entra no R$/hora |
 | **R$/hora bruto** | Receita bruta ÷ Horas trabalhadas | **Métrica principal** |
 | R$/minuto | R$/hora bruto ÷ 60 | |
 | Despesas totais | Soma de todas as despesas do dia (todos os grupos) | Inclui as despesas de rotina e as extras |
 | Lucro líquido | Receita bruta − Despesas totais | |
+| Custo da hora | Despesas totais ÷ Horas trabalhadas | "Sua hora de trabalho custou R$ X" |
+| Lucro por hora | Lucro líquido ÷ Horas trabalhadas | |
 | Margem | Lucro líquido ÷ Receita bruta | Quanto sobra de cada R$ 1 que entra |
 
 ## Meta
