@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase'
 import { Icon } from '../ui'
 
-// Tela 8 · Menu hambúrguer: o que se usa de vez em quando (Perfil, Relatórios, Configurações, Sair).
+// Tela 8 · Menu hambúrguer: o que se usa de vez em quando (Perfil, Relatórios, Ajustes, Configurações, Sair).
 export default function Menu({ user, name, go, close }) {
   return (
     <div className="overlay" onClick={close}>
@@ -14,6 +14,7 @@ export default function Menu({ user, name, go, close }) {
         <div className="menu-list">
           <button className="menu-item" onClick={() => go('perfil')}><Icon name="user" /> Perfil</button>
           <button className="menu-item" onClick={() => go('relatorios')}><Icon name="chart" /> Relatórios</button>
+          <button className="menu-item" onClick={() => go('ajustes')}><Icon name="edit" /> Ajustes</button>
           <button className="menu-item" onClick={() => go('config')}><Icon name="gear" /> Configurações</button>
         </div>
         <div className="grow" />

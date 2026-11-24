@@ -170,6 +170,11 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
               </div>
             )}
             {sum.days.length === 0 && <p className="muted">Nenhum lançamento nesse período.</p>}
+            {tab === 'dia' && (
+              <button className="btn btn-secondary" onClick={() => go('ajuste-dia', { date: start, back: 'relatorios' })}>
+                <Icon name="edit" size={20} /> Ajustar este dia
+              </button>
+            )}
             <button className="btn btn-secondary" disabled={pdfBusy || sum.days.length === 0} onClick={async () => {
               setPdfBusy(true); setError('')
               try {

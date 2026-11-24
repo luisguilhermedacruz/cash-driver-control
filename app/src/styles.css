@@ -116,8 +116,9 @@ legend { padding: 0; margin-bottom: 8px; }
 .info { color: var(--accent); font-size: 14px; }
 
 /* Botão do Google: fundo branco, como pedem as regras de marca do Google. */
-.btn-google { background: #FFFFFF; color: #1F1F1F; }
-.g-mark { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #1F1F1F; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+.btn-google { background: #FFFFFF; color: #1F1F1F; border: 1px solid #DADCE0; font-family: Roboto, Arial, sans-serif; font-weight: 500; gap: 12px; }
+.btn-google:hover { background: #F8F9FA; }
+.g-logo { width: 20px; height: 20px; flex: none; }
 .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; }
 .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
@@ -135,6 +136,20 @@ legend { padding: 0; margin-bottom: 8px; }
 .legal a { color: var(--accent); }
 .legal-brand { color: var(--text); text-decoration: none; }
 .login a { color: var(--accent); }
+
+/* Ajustes: linhas editáveis e formulário que sobe de baixo (sheet) */
+.edit-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer; color: inherit; font: inherit; }
+.overlay-sheet { flex-direction: column; justify-content: flex-end; align-items: center; }
+.sheet { width: 100%; max-width: 640px; max-height: 92dvh; overflow-y: auto; background: var(--bg); border: 1px solid var(--border); border-bottom: 0; border-radius: 20px 20px 0 0; padding: 20px 16px 28px; }
+.pause-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px; gap: 10px; align-items: end; }
+.check-row { display: flex; align-items: center; gap: 10px; font-size: 14px; min-height: 44px; }
+.check-row input { width: 20px; height: 20px; accent-color: var(--accent); }
+.confirm { border-color: var(--danger); }
+.field select { height: 52px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); padding: 0 12px; font-size: 16px; color: inherit; }
+.settings-item { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; border-bottom: 1px solid var(--border); }
+.settings-item:last-child { border-bottom: 0; }
+.add-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+.btn-small { height: 52px; padding: 0 18px; font-size: 15px; }
 
 /* Tablet (e computador): a coluna fica mais larga e os textos um pouco maiores. */
 @media (min-width: 700px) {

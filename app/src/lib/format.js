@@ -55,3 +55,13 @@ export function pauseLabel(seconds) {
   const m = Math.round(seconds / 60)
   return m < 60 ? `${m} min` : hoursLabel(seconds)
 }
+
+// Horário "HH:MM" (São Paulo) de um timestamp — para preencher <input type="time">.
+export function timeInput(ts) {
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(ts))
+  return `${p.find((x) => x.type === 'hour').value}:${p.find((x) => x.type === 'minute').value}`
+}
+
+// Junta dia (AAAA-MM-DD) + hora (HH:MM) de São Paulo num timestamp.
+// O Brasil não tem horário de verão desde 2019, então o fuso é sempre -03:00.
+export const toTs = (date, hhmm) => `${date}T${hhmm}:00-03:00`

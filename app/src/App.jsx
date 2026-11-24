@@ -9,6 +9,8 @@ import Relatorios from './screens/Relatorios'
 import Perfil from './screens/Perfil'
 import Configuracoes from './screens/Configuracoes'
 import Menu from './screens/Menu'
+import Ajustes from './screens/Ajustes'
+import AjusteDia from './screens/AjusteDia'
 import { Privacidade, Termos } from './screens/Legal'
 
 // O App decide qual tela mostrar:
@@ -72,6 +74,8 @@ export default function App() {
       {screen === 'encerrar' && <Encerrar {...common} {...params} />}
       {screen === 'despesa' && <Despesa {...common} {...params} />}
       {screen === 'relatorios' && <Relatorios {...common} {...params} />}
+      {screen === 'ajustes' && <Ajustes {...common} {...params} />}
+      {screen === 'ajuste-dia' && <AjusteDia {...common} {...params} />}
       {screen === 'perfil' && <Perfil {...common} />}
       {screen === 'config' && <Configuracoes {...common} onSaved={loadProfile} />}
       {menuOpen && <Menu {...common} close={() => setMenuOpen(false)} />}
