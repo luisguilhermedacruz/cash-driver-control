@@ -25,14 +25,8 @@ export function Icon({ name, size = 22 }) {
 }
 
 export function Logo({ size = 28 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden="true">
-      <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4" />
-      <circle cx="24" cy="24" r="7.5" fill="none" stroke="currentColor" strokeWidth="2.5" />
-      <path d="M16.5 24H7.5M31.5 24h9M24 31.5v9" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
-      <text x="24" y="28.5" textAnchor="middle" fontSize="12" fontWeight="700" fill="var(--accent)">$</text>
-    </svg>
-  )
+  // Símbolo do QuantoFez (velocímetro + cifrão). A versão com o nome fica em /quantofez-512.png
+  return <img src="/quantofez-symbol-64.png" width={size} height={size} alt="" className="logo-img" />
 }
 
 export function Header({ title, onBack, onMenu, initial, avatar }) {
@@ -43,7 +37,7 @@ export function Header({ title, onBack, onMenu, initial, avatar }) {
         : <button className="icon-btn" onClick={onMenu} aria-label="Abrir menu"><Icon name="menu" /></button>}
       {title
         ? <span className="header-title">{title}</span>
-        : <span className="brand"><Logo size={26} /> Cash Driver</span>}
+        : <span className="brand"><Logo size={28} /> Quanto<span className="brand-accent">Fez</span></span>}
       <button className="avatar" onClick={onMenu} aria-label="Abrir menu">
         {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : initial}
       </button>

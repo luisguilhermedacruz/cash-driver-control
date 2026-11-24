@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { loadPeriod } from '../lib/data'
-import { localDate, addDays, money, hoursLabel, timeLabel, dayLabel } from '../lib/format'
-import { summarize, workedSeconds } from '../lib/metrics'
+import { localDate, addDays, money, hoursLabel, timeLabel, dayLabel, pauseLabel } from '../lib/format'
+import { summarize, shiftTimes } from '../lib/metrics'
 import { Header, Stat, Badge, Icon, ErrorMsg } from '../ui'
 
 const TABS = [['dia', 'Dia'], ['semana', 'Semana'], ['mes', 'Mês'], ['datas', 'Datas']]
@@ -93,18 +93,39 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
               <Stat label="Receita" value={money(sum.total.revenue)} />
               <Stat label="Despesas" value={money(sum.total.expenses)} />
               <Stat label="Lucro" value={money(sum.total.profit)} />
-              <Stat label="R$/hora" value={sum.total.perHour ? money(sum.total.perHour) : '—'} sub={`${hoursLabel(sum.total.seconds)} · meta ${money(user.hourly_goal)}`} />
+              <Stat label="R$/hora" value={sum.total.perHour ? money(sum.total.perHour) : '—'} sub={`meta ${money(user.hourly_goal)}`} />
             </div>
+
+            {sum.total.span > 0 && (
+              <div className="card stack-8">
+                <span className="muted small">Jornada</span>
+                <div className="grid-3 jornada">
+                  <span className="stack-2"><span className="strong big">{hoursLabel(sum.total.seconds)}</span><span className="muted small">trabalhadas</span></span>
+                  <span className="stack-2"><span className="strong big">{pauseLabel(sum.total.paused)}</span><span className="muted small">em {sum.total.pauses} {sum.total.pauses === 1 ? 'pausa' : 'pausas'}</span></span>
+                  <span className="stack-2"><span className="strong big">{hoursLabel(sum.total.span)}</span><span className="muted small">do início ao fim</span></span>
+                </div>
+                {tab !== 'dia' && sum.total.daysWithHours > 0 && (
+                  <span className="muted small">Média de {hoursLabel(sum.total.seconds / sum.total.daysWithHours)} trabalhadas por dia ({sum.total.daysWithHours} {sum.total.daysWithHours === 1 ? 'dia' : 'dias'} com horário).</span>
+                )}
+              </div>
+            )}
 
             {tab === 'dia' && data.shifts.length > 0 && (
               <div className="stack-8">
                 <span className="muted small">Turnos</span>
                 {data.shifts.map((s) => {
-                  const br = data.breaks.filter((b) => b.shift_id === s.id)
+                  const br = data.breaks.filter((b) => b.shift_id === s.id).sort((a, b) => a.started_at.localeCompare(b.started_at))
+                  const t = shiftTimes(s, br)
                   return (
-                    <div key={s.id} className="card row-between">
-                      <span className="stack-2"><span>{timeLabel(s.started_at)} → {s.ended_at ? timeLabel(s.ended_at) : 'em andamento'}</span><span className="muted small">{br.length} {br.length === 1 ? 'pausa' : 'pausas'}</span></span>
-                      <span className="num">{hoursLabel(workedSeconds(s, br))}</span>
+                    <div key={s.id} className="card stack-8">
+                      <div className="row-between">
+                        <span className="strong">{timeLabel(s.started_at)} → {s.ended_at ? timeLabel(s.ended_at) : 'em andamento'}</span>
+                        <span className="num strong">{hoursLabel(t.worked)} trabalhadas</span>
+                      </div>
+                      <span className="muted small">Jornada {hoursLabel(t.span)} · pausas {pauseLabel(t.paused)}{s.time_quality === 'ajustado' ? ' · horário do histórico (aproximado)' : ''}</span>
+                      {br.map((b) => (
+                        <span key={b.id} className="muted small">⏸ {timeLabel(b.started_at)} → {b.ended_at ? timeLabel(b.ended_at) : 'agora'}</span>
+                      ))}
                     </div>
                   )
                 })}
@@ -134,7 +155,7 @@ export default function Relatorios({ user, name, go, openMenu, tab: initialTab =
                 {sum.days.map((d) => (
                   <button key={d.date} className="list-row as-button" onClick={() => { setTab('dia'); setRef(d.date) }}>
                     <span>{dayLabel(d.date, { weekday: 'short', day: '2-digit', month: '2-digit' })}</span>
-                    <span className="row-8"><span className="muted small">{d.perHour ? money(d.perHour) + '/h' : money(d.revenue)}</span><Badge r={d.rating} /></span>
+                    <span className="row-8"><span className="muted small">{d.seconds > 0 ? `${hoursLabel(d.seconds)} · ${money(d.perHour)}/h` : money(d.revenue)}</span><Badge r={d.rating} /></span>
                   </button>
                 ))}
               </div>

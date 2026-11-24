@@ -73,6 +73,9 @@ export default function Hoje({ user, name, go, openMenu }) {
               <Stat label="R$/hora" value={t?.perHour ? money(t.perHour) : '—'} />
             </div>
             {t?.rating && <div className="row-8"><span className="muted small">Hoje até agora:</span><Badge r={t.rating} /></div>}
+            {t?.seconds > 0 && t.expenses > 0 && (
+              <p className="small">Hoje a sua hora de trabalho custou <strong>{money(t.costPerHour)}</strong>.</p>
+            )}
             {y && (
               <div className="card stack-8">
                 <div className="row-between"><span className="strong">Ontem</span><Badge r={y.rating} /></div>

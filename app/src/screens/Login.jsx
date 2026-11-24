@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { Logo, ErrorMsg } from '../ui'
+import { ErrorMsg } from '../ui'
 
 // Tela 1 · Login: Google (OAuth) ou e-mail e senha.
 export default function Login() {
@@ -41,8 +41,7 @@ export default function Login() {
   return (
     <main className="page login">
       <div className="login-brand">
-        <Logo size={84} />
-        <span className="brand-name">CASH DRIVER CONTROL</span>
+        <img src="/quantofez-512.png" width="160" height="160" alt="QuantoFez" />
       </div>
       <div className="stack-8 center-text">
         <h1>Seja bem-vindo</h1>

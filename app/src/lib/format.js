@@ -49,3 +49,9 @@ export function parseMoney(txt) {
   const n = Number(norm)
   return Number.isFinite(n) ? n : NaN
 }
+
+// "40 min" ou "1h20" (para pausas)
+export function pauseLabel(seconds) {
+  const m = Math.round(seconds / 60)
+  return m < 60 ? `${m} min` : hoursLabel(seconds)
+}

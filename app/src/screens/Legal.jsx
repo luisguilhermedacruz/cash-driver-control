@@ -7,7 +7,7 @@ import { Logo } from '../ui'
 function Wrap({ title, children }) {
   return (
     <main className="page legal">
-      <a href="/" className="brand legal-brand"><Logo size={28} /> Cash Driver Control</a>
+      <a href="/" className="brand legal-brand"><Logo size={28} /> QuantoFez</a>
       <h1>{title}</h1>
       <p className="muted small">Vigente desde {LEGAL.vigencia}.</p>
       {children}
@@ -20,10 +20,10 @@ function Wrap({ title, children }) {
 export function Privacidade() {
   return (
     <Wrap title="Política de Privacidade">
-      <p>Esta política explica quais dados o <strong>Cash Driver Control</strong> coleta, por que coleta e como você pode exercer seus direitos, conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 · LGPD).</p>
+      <p>Esta política explica quais dados o <strong>QuantoFez</strong> coleta, por que coleta e como você pode exercer seus direitos, conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 · LGPD).</p>
 
       <h2>1. Quem é o responsável</h2>
-      <p>O controlador dos dados é <strong>{LEGAL.controlador}</strong>, responsável pelo Cash Driver Control. Contato: <a href={`mailto:${LEGAL.contato}`}>{LEGAL.contato}</a>.</p>
+      <p>O controlador dos dados é <strong>{LEGAL.controlador}</strong>, responsável pelo QuantoFez. Contato: <a href={`mailto:${LEGAL.contato}`}>{LEGAL.contato}</a>.</p>
 
       <h2>2. Quais dados coletamos</h2>
       <ul>
@@ -71,10 +71,10 @@ export function Privacidade() {
 export function Termos() {
   return (
     <Wrap title="Termos de Uso">
-      <p>Ao criar uma conta no <strong>Cash Driver Control</strong>, você concorda com estes termos.</p>
+      <p>Ao criar uma conta no <strong>QuantoFez</strong>, você concorda com estes termos.</p>
 
       <h2>1. O que é o serviço</h2>
-      <p>O Cash Driver Control é uma ferramenta para motoristas de aplicativo registrarem turnos, ganhos e despesas e acompanharem seu desempenho, como ganho por hora e lucro. O app não tem ligação com Uber, 99, InDriver ou qualquer outra plataforma.</p>
+      <p>O QuantoFez é uma ferramenta para motoristas de aplicativo registrarem turnos, ganhos e despesas e acompanharem seu desempenho, como ganho por hora e lucro. O app não tem ligação com Uber, 99, InDriver ou qualquer outra plataforma.</p>
 
       <h2>2. Sua conta</h2>
       <ul>

@@ -1,12 +1,12 @@
-/* Tema escuro do Cash Driver Control (mesmo visual do layout no canvas). */
+/* Tema escuro do QuantoFez (mesmo visual do layout no canvas). */
 :root {
   --bg: #0E1116;
   --card: #171B22;
   --border: #2A313C;
   --text: #E8EAED;
   --muted: #A3ACB8;
-  --accent: #2DD4A3;
-  --accent-ink: #06281F;
+  --accent: #22DC76;
+  --accent-ink: #062A15;
   --danger: #F87171;
   --ruim: #F87171; --regular: #FBBF24; --bom: #34D399; --otimo: #60A5FA;
   font-family: 'Lucida Sans', 'Lucida Sans Unicode', 'Lucida Grande', system-ui, sans-serif;
@@ -31,7 +31,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
 .header { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 8px; }
 .header-title { font-weight: 600; font-size: 17px; }
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 17px; }
 .login-brand { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .brand-name { font-weight: 600; font-size: 19px; letter-spacing: 0.4px; }
 
@@ -120,6 +120,13 @@ legend { padding: 0; margin-bottom: 8px; }
 .g-mark { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #1F1F1F; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
 .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; }
 .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Marca */
+.logo-img { display: block; border-radius: 22%; }
+.brand-accent { color: var(--accent); }
+
+/* Jornada: três números lado a lado */
+.jornada { align-items: start; }
 
 /* Páginas de Privacidade e Termos */
 .legal { max-width: 720px; margin: 0 auto; padding: 24px 20px 40px; line-height: 1.65; }
