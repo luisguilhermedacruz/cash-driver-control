@@ -135,7 +135,7 @@ function Row({ main, sub, value, onClick }) {
 }
 
 // Parte de baixo de todo formulário: Salvar, e (se já existe) Apagar com confirmação.
-function FormActions({ busy, canDelete, deleteLabel, onDelete, confirmExtra, onClose }) {
+function FormActions({ busy, canDelete, deleteLabel, onDelete, confirmExtra, onClose, saveLabel = 'Salvar' }) {
   const [confirming, setConfirming] = useState(false)
   return (
     <>
@@ -150,7 +150,7 @@ function FormActions({ busy, canDelete, deleteLabel, onDelete, confirmExtra, onC
         </div>
       ) : (
         <>
-          <button className="btn btn-primary" disabled={busy}>{busy ? 'Salvando…' : 'Salvar'}</button>
+          <button className="btn btn-primary" disabled={busy}>{busy ? 'Salvando…' : saveLabel}</button>
           <div className="row-8">
             <button type="button" className="btn btn-secondary grow" onClick={onClose}>Cancelar</button>
             {canDelete && <button type="button" className="btn btn-danger grow" onClick={() => setConfirming(true)}><Icon name="trash" size={18} /> {deleteLabel}</button>}
@@ -229,8 +229,11 @@ function ShiftForm({ user, date, shift, breaks, earningsCount, onClose, onDone }
     return (
       <div className="stack-12">
         <span className="strong big">Jornada em andamento</span>
-        <p className="muted small">Ela começou às {timeLabel(shift.started_at)} e ainda está aberta. Encerre na tela Hoje e depois volte aqui para ajustar os horários.</p>
-        <button className="btn btn-secondary" onClick={onClose}>Entendi</button>
+        <p className="muted small">Ela começou às {timeLabel(shift.started_at)} e ainda está aberta. Para ajustar os horários, encerre na tela Hoje e volte aqui. Se foi um teste ou começou sem querer, pode apagar.</p>
+        <ErrorMsg error={error} />
+        <form className="stack-12" onSubmit={(e) => { e.preventDefault(); onClose() }}>
+          <FormActions busy={busy} canDelete deleteLabel="Apagar" onDelete={remove} onClose={onClose} saveLabel="Entendi" />
+        </form>
       </div>
     )
   }
