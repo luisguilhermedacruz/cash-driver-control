@@ -7,7 +7,7 @@ import { Logo } from '../ui'
 function Wrap({ title, children }) {
   return (
     <main className="page legal">
-      <a href="/" className="brand legal-brand"><Logo size={28} /> QuantoFez</a>
+      <a href="/" className="brand legal-brand"><Logo size={28} /><span>Quanto<span className="brand-accent">Fez</span></span></a>
       <h1>{title}</h1>
       <p className="muted small">Vigente desde {LEGAL.vigencia}.</p>
       {children}

@@ -40,7 +40,7 @@ export function Header({ title, onBack, onMenu, initial, avatar }) {
         : <button className="icon-btn" onClick={onMenu} aria-label="Abrir menu"><Icon name="menu" /></button>}
       {title
         ? <span className="header-title">{title}</span>
-        : <span className="brand"><Logo size={28} /> Quanto<span className="brand-accent">Fez</span></span>}
+        : <span className="brand"><Logo size={28} /><span>Quanto<span className="brand-accent">Fez</span></span></span>}
       <button className="avatar" onClick={onMenu} aria-label="Abrir menu">
         {avatar ? <img src={avatar} alt="" referrerPolicy="no-referrer" /> : initial}
       </button>
