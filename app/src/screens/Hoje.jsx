@@ -14,6 +14,8 @@ export default function Hoje({ user, name, go, openMenu }) {
   const [, setTick] = useState(0)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [ask, setAsk] = useState(null) // turno de hoje já encerrado → perguntar se continua nele
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const today = localDate()
   const yesterday = addDays(today, -1)
 
@@ -43,7 +45,29 @@ export default function Hoje({ user, name, go, openMenu }) {
     await load(); setBusy(false)
   }
   const now = () => new Date().toISOString()
-  const start = () => run(() => supabase.from('shifts').insert({ user_id: user.id, work_date: today, started_at: now() }))
+  // Regra: um turno por dia. Se já existe um turno de HOJE encerrado, não cria outro:
+  // pergunta se a pessoa quer continuar nele (o tempo parado vira uma pausa).
+  const lastToday = (period?.shifts || [])
+    .filter((s) => s.work_date === today && s.ended_at)
+    .sort((a, b) => b.ended_at.localeCompare(a.ended_at))[0]
+  function start() {
+    if (lastToday) { setAsk(lastToday); return }
+    run(() => supabase.from('shifts').insert({ user_id: user.id, work_date: today, started_at: now() }))
+  }
+  // Continuar: 1) cria a pausa do fim antigo até agora; 2) "reabre" o turno (ended_at volta a ficar vazio).
+  const continueShift = () => run(async () => {
+    const b = await supabase.from('breaks').insert({ shift_id: ask.id, user_id: user.id, started_at: ask.ended_at, ended_at: now() })
+    if (b.error) return b
+    setAsk(null)
+    return supabase.from('shifts').update({ ended_at: null }).eq('id', ask.id)
+  })
+  // Apagar o turno aberto (ex.: começou sem querer). As pausas vão junto; ganhos do turno também.
+  const deleteOpen = () => run(async () => {
+    const e = await supabase.from('earnings').delete().eq('shift_id', open.id)
+    if (e.error) return e
+    setConfirmDelete(false)
+    return supabase.from('shifts').delete().eq('id', open.id)
+  })
   const openBreak = breaks.find((b) => !b.ended_at)
   const pause = () => run(() => supabase.from('breaks').insert({ shift_id: open.id, user_id: user.id, started_at: now() }))
   const resume = () => run(() => supabase.from('breaks').update({ ended_at: now() }).eq('id', openBreak.id))
@@ -83,9 +107,18 @@ export default function Hoje({ user, name, go, openMenu }) {
               </div>
             )}
             <div className="grow" />
-            <button className="btn btn-primary btn-huge" onClick={start} disabled={busy}>
-              <span>Iniciar turno</span><small>o cronômetro começa na hora</small>
-            </button>
+            {ask ? (
+              <div className="card stack-12 ask">
+                <span className="strong">Você já trabalhou hoje ({timeLabel(ask.started_at)} – {timeLabel(ask.ended_at)}).</span>
+                <span className="muted small">Quer continuar a jornada de hoje? O tempo desde {timeLabel(ask.ended_at)} até agora vira uma pausa, e o cronômetro volta a rodar no mesmo turno.</span>
+                <button className="btn btn-primary" onClick={continueShift} disabled={busy}><Icon name="play" size={20} /> Sim, continuar a jornada</button>
+                <button className="btn btn-secondary" onClick={() => setAsk(null)} disabled={busy}>Cancelar</button>
+              </div>
+            ) : (
+              <button className="btn btn-primary btn-huge" onClick={start} disabled={busy || !period}>
+                <span>{lastToday ? 'Continuar jornada' : 'Iniciar turno'}</span><small>{lastToday ? 'você já trabalhou hoje' : 'o cronômetro começa na hora'}</small>
+              </button>
+            )}
             <button className="btn btn-secondary" onClick={() => go('despesa')}><Icon name="plus" /> Despesa fora do turno</button>
           </>
         )}
@@ -117,6 +150,17 @@ export default function Hoje({ user, name, go, openMenu }) {
             </div>
             <div className="grow" />
             <button className="btn btn-primary" onClick={() => go('despesa')}><Icon name="plus" /> Despesa</button>
+            {confirmDelete ? (
+              <div className="card stack-8 confirm">
+                <span className="strong">Apagar este turno? O tempo e as pausas somem e não dá pra desfazer.</span>
+                <div className="row-8">
+                  <button className="btn btn-secondary grow" onClick={() => setConfirmDelete(false)} disabled={busy}>Cancelar</button>
+                  <button className="btn btn-danger grow" onClick={deleteOpen} disabled={busy}>Sim, apagar</button>
+                </div>
+              </div>
+            ) : (
+              <button className="link-btn danger-link" onClick={() => setConfirmDelete(true)}><Icon name="trash" size={18} /> Iniciou sem querer? Apagar este turno</button>
+            )}
           </>
         )}
       </main>

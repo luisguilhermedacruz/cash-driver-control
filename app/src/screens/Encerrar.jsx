@@ -14,18 +14,29 @@ export default function Encerrar({ user, name, go, openMenu, shiftId }) {
   const [platforms, setPlatforms] = useState([])
   const [values, setValues] = useState({})
   const [showOthers, setShowOthers] = useState(false)
+  const [hadEarnings, setHadEarnings] = useState(false)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
     (async () => {
-      const [sh, br, pl] = await Promise.all([
+      const [sh, br, pl, ea] = await Promise.all([
         supabase.from('shifts').select('*').eq('id', shiftId).single(),
         supabase.from('breaks').select('*').eq('shift_id', shiftId),
-        supabase.from('platforms').select('*').eq('is_active', true).order('id'),
+        supabase.from('platforms').select('*').order('id'),
+        supabase.from('earnings').select('*').eq('shift_id', shiftId),
       ])
-      if (sh.error || br.error || pl.error) { setError((sh.error || br.error || pl.error).message); return }
-      setShift(sh.data); setBreaks(br.data); setPlatforms(pl.data)
+      const err = sh.error || br.error || pl.error || ea.error
+      if (err) { setError(err.message); return }
+      // Jornada que foi continuada: já tem ganhos lançados. Preenche com eles para a pessoa
+      // digitar o TOTAL do dia (e não somar duas vezes).
+      const prev = {}
+      ea.data.forEach((e) => { prev[e.platform_id] = (prev[e.platform_id] || 0) + Number(e.amount) })
+      setShift(sh.data); setBreaks(br.data)
+      setPlatforms(pl.data.filter((p) => p.is_active || prev[p.id]))
+      setValues(Object.fromEntries(Object.entries(prev).map(([k, v]) => [k, String(v.toFixed(2)).replace('.', ',')])))
+      setHadEarnings(ea.data.length > 0)
+      if (pl.data.some((p) => prev[p.id] && !MAIN.includes(p.name))) setShowOthers(true)
     })()
   }, [shiftId])
 
@@ -57,6 +68,11 @@ export default function Encerrar({ user, name, go, openMenu, shiftId }) {
     const rows = platforms.filter((p) => parsed[p.id] > 0).map((p) => ({
       user_id: user.id, work_date: shift.work_date, shift_id: shift.id, platform_id: p.id, amount: parsed[p.id],
     }))
+    // Se a jornada já tinha ganhos (foi continuada), troca pelos totais novos.
+    if (hadEarnings) {
+      const d = await supabase.from('earnings').delete().eq('shift_id', shift.id)
+      if (d.error) { setError(d.error.message); setBusy(false); return }
+    }
     if (rows.length) {
       const r2 = await supabase.from('earnings').insert(rows)
       if (r2.error) { setError(r2.error.message); setBusy(false); return }
@@ -82,6 +98,7 @@ export default function Encerrar({ user, name, go, openMenu, shiftId }) {
           <span className="muted small">{hoursLabel(seconds)} trabalhadas · {breaks.length} {breaks.length === 1 ? 'pausa' : 'pausas'}</span>
         </div>
         <span className="strong">Quanto você ganhou em cada plataforma?</span>
+        {hadEarnings && <span className="info small">Esta jornada foi continuada: os valores já lançados estão preenchidos. Coloque o TOTAL do dia em cada plataforma.</span>}
         {main.map(field)}
         <span className="muted small">Não rodou em alguma? Deixe em branco.</span>
         {others.length > 0 && !showOthers && (
